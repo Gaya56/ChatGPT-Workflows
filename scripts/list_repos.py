@@ -11,15 +11,23 @@ def main():
     g = Github(gh_token)
 
     # 3. Fetch all repositories for your account
-    # If it's a personal account, 'get_user()' will be your user. 
-    # If it's an org, you'd do 'get_organization("YourOrgName")'.
-    user = g.get_user("Gaya56")  # or just g.get_user() if the token belongs to Gaya56
+    user = g.get_user("Gaya56")  # or g.get_user() if token is from Gaya56
     repos = user.get_repos()
 
-    # 4. Print each repository name
-    print("Repositories under the account 'Gaya56':")
+    # 4. Prepare output text
+    output_lines = ["Repositories under the account 'Gaya56':\n"]
     for repo in repos:
-        print(f"- {repo.full_name}")
+        output_lines.append(f"- {repo.full_name}\n")
+
+    # 5. Write the repo list to OpenAI/repoList.txt
+    # Ensure the 'OpenAI' folder exists (create if missing)
+    os.makedirs("OpenAI", exist_ok=True)
+
+    file_path = os.path.join("OpenAI", "repoList.txt")
+    with open(file_path, "w", encoding="utf-8") as f:
+        f.writelines(output_lines)
+
+    print(f"Repository list saved to {file_path}")
 
 if __name__ == "__main__":
     main()
