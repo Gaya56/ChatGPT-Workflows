@@ -14,7 +14,7 @@ def main():
     g = Github(gh_access_token)
 
     # Replace "Gaya56/ChatGPT-Workflows" with your "owner/repo"
-    repo = g.get_repo("YourGitHubUsername/YourRepo")
+    repo = g.get_repo("Gaya56/ChatGPT-Workflows/")
 
     # Example operation: create or update a file
     file_path = "some_folder/example_file.txt"
