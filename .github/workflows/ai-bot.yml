@@ -1,0 +1,13 @@
+name: AI Bot Workflow
+on: [push]
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4  # Check out code
+      - name: Run AI Bot script
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GH_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+        run: python scripts/ai_bot.py
