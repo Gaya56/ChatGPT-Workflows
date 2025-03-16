@@ -16,7 +16,7 @@ def main():
 
     # (Optional) test reading or creating a file
     try:
-        new_file_path = "some_folder/new_test_file.txt"
+        new_file_path = "OpenAI/repoList.txt"
         new_file_content = "Hello from ChatGPT AI bot!"
         repo.create_file(
             new_file_path,
