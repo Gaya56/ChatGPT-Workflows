@@ -1,18 +1,18 @@
 name: AI Bot Workflow
 
 on: 
+  workflow_dispatch:      # Allows manual triggering
   push:
-    branches: [main]  # Trigger on pushes to main (adjust as needed)
+    branches: [main]      # You can adjust as needed
 
 jobs:
   ai_bot:
     runs-on: ubuntu-latest
     permissions:
-      contents: write  # Allows writing to your repo
-    
+      contents: write     # Required for file commits/updates
+
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v5
