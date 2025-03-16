@@ -1,11 +1,29 @@
 name: AI Bot Workflow
-on: [push]
+
+on: 
+  push:
+    branches: [main]  # Trigger on pushes to main (adjust as needed)
 
 jobs:
-  run-bot:
+  ai_bot:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write  # Allows writing to your repo
+    
     steps:
-      - uses: actions/checkout@v4  # Check out code
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install openai PyGithub
+
       - name: Run AI Bot script
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
