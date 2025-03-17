@@ -1,0 +1,26 @@
+Repository Paths and Summaries:
+
+**Path**: README.md
+**Summary**: The file contains descriptions and configurations for different GitHub Actions workflows related to an AI-powered automation setup. It specifically includes details about the AI Bot Workflow named `ai-bot.yml` that has been created and tested as part of this project.
+
+**Path**: requirements.txt
+**Summary**: This file likely contains the names of Python libraries or packages that are used in a code repository. Specifically, "openai" and "PyGithub" are likely dependencies or tools utilized in the codebase.
+
+**Path**: .gitignore
+**Summary**: This file contains a list of file patterns to be ignored by version control systems in a code repository, such as byte-compiled files, C extensions, and distribution/packaging directories, to prevent clutter and unnecessary changes in the repository. It helps in
+
+**Path**: docs/Manual-Github-actions-chatgpt.md
+**Summary**: This document outlines a manual GitHub Actions approach where ChatGPT assists in writing or editing workflow files and code without directly pushing commits. It provides guidance on setting up and managing GitHub Actions within a code repository.
+
+**Path**: scripts/list_repos.py
+**Summary**: This script imports necessary modules to access GitHub and retrieve an access token from environment variables for authentication. The main function is responsible for obtaining the GitHub access token and raising an error if the token is not found.
+
+**Path**: scripts/openai-find-paths.py
+**Summary**: This Python script utilizes the OpenAI API to generate a short summary of a file's content with a focus on its role within a code repository. The `summarize_content` function takes the content of a file as input and outputs a concise two
+
+**Path**: scripts/ai_bot.py
+**Summary**: This script defines a `main` function that retrieves sensitive information like OpenAI and GitHub tokens from environment variables. It appears to be a script designed to interact with OpenAI and GitHub APIs within a code repository for automation or integration purposes.
+
+**Path**: OpenAI/repoList.txt
+**Summary**: The file lists repositories under the account 'Gaya56', including projects related to Azure Functions, chatbots, community templates, and integration between Event Hubs and Kafka. These repositories showcase a variety of projects and tools developed by the user 'Gaya
+

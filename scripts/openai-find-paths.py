@@ -3,20 +3,28 @@ import openai
 
 def summarize_content(content):
     """
-    Sends a short snippet of the file content to OpenAI
-    and returns a brief two-sentence description.
+    Uses openai.ChatCompletion to generate a short, two-sentence description
+    focusing on the file's role in a code repository.
     """
     try:
-        # Feel free to adjust model, max_tokens, temperature, etc.
-        response = openai.Completion.create(
-            engine="text-davinci-003",
-            prompt=(
-                f"Summarize this file content in two sentences, focusing on its role in a code repository:\n\n{content}\n\n"
-            ),
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {
+                    "role": "system",
+                    "content": (
+                        "You are a code review assistant. "
+                        "Summarize the following file content in two sentences, "
+                        "focusing on its role in a code repository."
+                    )
+                },
+                {"role": "user", "content": content},
+            ],
             max_tokens=50,
             temperature=0.7
         )
-        summary = response.choices[0].text.strip()
+        # The assistant's reply is here:
+        summary = response.choices[0].message.content.strip()
         return summary
     except Exception as e:
         return f"Could not summarize: {str(e)}"
@@ -32,7 +40,7 @@ def main():
     output_lines = ["Repository Paths and Summaries:\n\n"]
 
     for root, dirs, files in os.walk(target_directory):
-        # Skip the .git folder or any other folder you don't want to process
+        # Skip the .git folder or any other you don't want to process
         if '.git' in root:
             continue
 
@@ -50,7 +58,7 @@ def main():
             except:
                 snippet = "Non-text or unreadable file."
 
-            # Summarize via OpenAI
+            # Summarize via OpenAI's ChatCompletion
             summary = summarize_content(snippet)
 
             output_lines.append(f"**Path**: {display_path}\n")
@@ -68,4 +76,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
