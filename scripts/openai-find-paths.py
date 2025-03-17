@@ -32,14 +32,14 @@ def main():
     output_lines = ["Repository Paths and Summaries:\n\n"]
 
     for root, dirs, files in os.walk(target_directory):
-        # Skip the .git folder or any other you don't want to process
+        # Skip the .git folder or any other folder you don't want to process
         if '.git' in root:
             continue
 
         for filename in files:
             # Build the full path
             full_path = os.path.join(root, filename)
-            # Limit the path string for readability
+            # Relativize the path for easier readability
             display_path = os.path.relpath(full_path, start=".")
 
             # Read a small snippet from each file
@@ -58,7 +58,7 @@ def main():
 
     # Ensure the 'OpenAI' folder exists
     os.makedirs("OpenAI", exist_ok=True)
-    file_path = os.path.join("OpenAI", "pathsSummary.txt")
+    file_path = os.path.join("OpenAI", "find-path.txt")
 
     # Write everything to a single file
     with open(file_path, "w", encoding="utf-8") as f:
