@@ -11,7 +11,7 @@ def main():
     g = Github(gh_token)
 
     # 3. Fetch all repositories for your account
-    user = g.get_user("Gaya56")  # or g.get_user() if token is from Gaya56
+    user = g.get_user("Gaya56")  # or just g.get_user() if the token belongs to Gaya56
     repos = user.get_repos()
 
     # 4. Prepare output text
