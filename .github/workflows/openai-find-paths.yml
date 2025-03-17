@@ -24,4 +24,4 @@ jobs:
       - name: Run openai-find-paths.py
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        run: python openai-find-paths.py
+        run: python scripts/openai-find-paths.py
