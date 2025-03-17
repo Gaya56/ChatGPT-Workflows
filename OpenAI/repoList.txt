@@ -1,1 +1,26 @@
-Hello from ChatGPT AI bot!
+Repositories under the account 'Gaya56':
+- Gaya56/azure-functions-kafka-extension
+- Gaya56/ChatBot-DialogFlow
+- Gaya56/ChatGPT-Workflows
+- Gaya56/community-templates
+- Gaya56/EventHubsKafkaTalk
+- Gaya56/facebook
+- Gaya56/google-maps
+- Gaya56/google-maps-solar-api
+- Gaya56/js-solar-potential
+- Gaya56/openai-cookbook
+- Gaya56/openai-openapi
+- Gaya56/PayloadsAllTheThings
+- Gaya56/powerbi-desktop-samples
+- Gaya56/PowerPlatformConnectors
+- Gaya56/Prompt-Engineering-Library
+- Gaya56/RepoReader
+- Gaya56/skills-copilot-codespaces-vscode
+- Gaya56/skills-hello-github-actions
+- Gaya56/skills-test-with-actions
+- Gaya56/Solar-API-Web
+- Gaya56/Solar-Web
+- Gaya56/Solar_API_Library
+- Gaya56/Sublist3r
+- Gaya56/testromi
+- Gaya56/Tryhackme-NetworkSecurity
