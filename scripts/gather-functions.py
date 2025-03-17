@@ -34,7 +34,7 @@ def ai_extract_functions(file_path, code_chunk):
 def local_extract_functions(code_text):
     """
     Basic regex approach to find 'def function_name(...):' in Python code.
-    Expand for other languages as needed.
+    Expand or adjust for other languages as needed.
     """
     pattern = r'^\s*def\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*\('
     found = re.findall(pattern, code_text, flags=re.MULTILINE)
@@ -48,11 +48,13 @@ def main():
         use_ai = True
         print("AI-based function extraction is enabled.")
     else:
-        print("No OPENAI_API_KEY found; defaulting to regex function extraction only.")
+        print("No OPENAI_API_KEY found; defaulting to regex-based function extraction only.")
 
-    index_path = os.path.join("OpenAI", "index.md")
-    find_paths_file = os.path.join("OpenAI", "find-path.txt")
+    # The two input files needed from previous workflows:
+    index_path = os.path.join(".", "index.md") # from create-index.py
+    find_paths_file = os.path.join("OpenAI", "find-path.txt") # from openai-find-paths.py
 
+    # Check if they exist
     if not os.path.exists(index_path):
         print(f"Error: {index_path} not found. Make sure create-index.py was run.")
         return
@@ -68,15 +70,14 @@ def main():
     with open(find_paths_file, "r", encoding="utf-8") as fpf:
         find_paths_content = fpf.read()
 
-    # We'll gather file references from index.md by looking for lines with backticks
-    # that contain .py, .yml, etc. Adjust as needed:
+    # 1) Collect file references from index.md (looking for lines with backticks that have .py, .yml, etc.)
     file_lines = []
     for line in index_md.splitlines():
         if '`' in line and (".py" in line or ".yml" in line):
             path = line.split('`')[1]
             file_lines.append(path)
 
-    # Build a dict of short summaries from find-path.txt
+    # 2) Create a dict for short summaries from find-path.txt
     summary_dict = {}
     lines = find_paths_content.splitlines()
     current_path = None
@@ -88,40 +89,48 @@ def main():
             summary_dict[current_path] = summary
             current_path = None
 
-    # Prepare output
+    # Prepare output lines for the final doc
     output = [
         "# Repository Functions Overview\n\n",
-        "This document chains data from `index.md`, `find-path.txt`, and code scans.\n\n"
+        "This document combines data from `index.md` (file references), "
+        "`find-path.txt` (short AI-based file summaries), and local/GPT-based function extraction.\n\n"
     ]
 
+    # Make sure the OpenAI folder exists
+    os.makedirs("OpenAI", exist_ok=True)
+
+    # The path where we'll write the final results
+    out_file = os.path.join("OpenAI", "repo-function.md")
+
     for file_path in file_lines:
+        # if file doesn't exist, skip
         if not os.path.exists(file_path):
-            # If file doesn't exist, skip
             continue
 
+        # read file content
         try:
             with open(file_path, "r", encoding="utf-8", errors="ignore") as code_file:
                 code_text = code_file.read()
         except:
             code_text = ""
 
-        # 1) local parse for function names
+        # 1) local parse
         local_funcs = local_extract_functions(code_text)
 
-        # 2) optional GPT parse
-        ai_parse = ""
+        # 2) AI parse if we have a key
+        ai_results = []
         if use_ai and code_text:
-            chunk_size = 3000 # approximate chunk size for GPT
-            code_chunks = [code_text[i:i+chunk_size] for i in range(0, len(code_text), chunk_size)]
-            ai_responses = []
-            for chunk in code_chunks:
-                chunk_result = ai_extract_functions(file_path, chunk)
-                ai_responses.append(chunk_result)
-            ai_parse = "\n".join(ai_responses)
+            chunk_size = 3000
+            chunks = [code_text[i:i+chunk_size] for i in range(0, len(code_text), chunk_size)]
+            for chunk in chunks:
+                ai_res = ai_extract_functions(file_path, chunk)
+                ai_results.append(ai_res)
+            ai_parse = "\n".join(ai_results)
 
-        # short summary from find-paths
-        short_summary = summary_dict.get(file_path, "(No short summary found)")
+        # get short summary from find-path.txt
+        short_summary = summary_dict.get(file_path, "(No summary found)")
 
+        # Build section
         output.append(f"## {file_path}\n\n")
         output.append(f"**Short Summary:** {short_summary}\n\n")
 
@@ -136,10 +145,9 @@ def main():
             output.append(ai_parse)
             output.append("\n\n")
 
-    # Write everything to repo-function.md in OpenAI directory
-    out_file = os.path.join("OpenAI", "repo-function.md")
-    with open(out_file, "w", encoding="utf-8") as out:
-        out.writelines(output)
+    # Write out to OpenAI/repo-function.md
+    with open(out_file, "w", encoding="utf-8") as outf:
+        outf.writelines(output)
 
     print(f"{out_file} created with function details from each file!")
 

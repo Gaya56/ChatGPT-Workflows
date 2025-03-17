@@ -4,31 +4,36 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write # needed to push changes back to the repo
+  contents: write # Allows committing changes back to the repository
 
 jobs:
   gather_functions_job:
     runs-on: ubuntu-latest
 
     steps:
+      # 1) Check out the repo
       - name: Check out repository
         uses: actions/checkout@v4
 
+      # 2) Set up Python
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.x'
 
+      # 3) Install dependencies
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install openai
 
+      # 4) Run gather-functions.py (with optional AI-based code analysis)
       - name: Gather Functions
         env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }} # optional for AI-based analysis
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }} # optional for deeper GPT-based function scanning
         run: python scripts/gather-functions.py
-      
+
+      # 5) Commit & push the newly generated repo-function.md (stored in OpenAI/repo-function.md)
       - name: Commit repo-function.md
         run: |
           git config user.name "github-actions[bot]"
@@ -36,4 +41,3 @@ jobs:
           git add OpenAI/repo-function.md
           git commit -m "Add or update repo-function.md"
           git push
-
