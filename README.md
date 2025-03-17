@@ -1,6 +1,4 @@
-# Updated README.md
-
-**ChatGPT-Workflows**
+# ChatGPT-Workflows
 
 **Summary (Two Paragraphs)**  
 We’ve created and tested several different GitHub Actions workflows for an AI-powered automation setup. First, the **AI Bot Workflow (`ai-bot.yml`)** pairs with `ai_bot.py` to fetch secrets (like an OpenAI key and GitHub token), allowing you to automate code edits or file operations via a Python script. Second, the **ChatGPT Code Reviewer (`chatgpt-code-reviewer.yml`)** workflow automatically posts GPT-based review comments on pull requests, providing near-instant code feedback. Next, the **List Repos Workflow (`list_repos.yml`)** demonstrates how to run a Python script (`list_repos.py`) that fetches a list of repositories and writes them to a local file—then commits that file back to the repo for persistence.
@@ -41,12 +39,20 @@ The **Create Index Workflow** (`create-index.yml`) and its companion script (`cr
 - **Trigger**: Manually from the Actions tab (`workflow_dispatch`). It installs dependencies, runs `create-index.py`, and pushes the newly generated `index.md` to the repository.
 - **Result**: A fresh `index.md` at the repo root, listing directories and files, along with any AI-based descriptions.
 
+### 6. Gather Functions & question-repo Scripts
+**Gather Functions (`gather-functions.yml`, `gather-functions.py`)**  
+- **What It Does**: This workflow and script collect file references from `index.md` and `OpenAI/find-path.txt`, then scan each file (optionally with GPT) to extract and list functions in a new file, `repo-function.md`.  
+- **When & How to Use**: Manually trigger the “Gather Functions” workflow after you’ve generated `index.md` and `find-path.txt`. Great for a deeper dive into function definitions and code structure.
+
+**question-repo (`question-repo.py`)**  
+- **What It Does**: An interactive Python script that references `index.md`, `OpenAI/find-path.txt`, and optionally scanned code files for context. It rotates through multiple GPT API keys if rate-limited.  
+- **When & How to Use**: Run locally via `python question-repo.py`. Then ask architecture or code questions about your repository, and ChatGPT will respond with file references, line numbers, and recommended changes.
+
 ---
 
-These workflows can be reused, adapted, or expanded (for example, adding more complex AI logic in your Python scripts) any time you need GitHub-based automations, code reviews, or integration with third-party services like OpenAI.
+These workflows and scripts can be reused, adapted, or expanded (for example, adding more complex AI logic in your Python scripts) any time you need GitHub-based automations, code reviews, or integration with third-party services like OpenAI.
 
 ---
 
 ## Future Integration in Other Repositories
-You can easily apply these same patterns to other projects. For example, simply copy a workflow file (like `ai-bot.yml`) and its paired Python script into another repo, adjust the tokens and secrets, and you’ll have AI-assisted code editing or reviewing up and running. Similarly, you can adapt the “find paths” workflow to generate a dynamic index or documentation in any repository, using OpenAI to summarize new or changing files. By combining these workflows with various triggers (push, pull_request, cron schedules), you can orchestrate advanced automation in multiple codebases, drastically streamlining your CI/CD and documentation processes.
-
+You can easily apply these same patterns to other projects. For example, simply copy a workflow file (like `ai-bot.yml`) and its paired Python script into another repo, adjust the tokens and secrets, and you’ll have AI-assisted code editing or reviewing up and running. Similarly, you can adapt the “find paths” workflow to generate a dynamic index or documentation in any repository, or the “gather functions” and “question-repo” scripts for deeper architecture analysis. By combining these workflows with various triggers (push, pull_request, cron schedules), you can orchestrate advanced automation in multiple codebases, drastically streamlining your CI/CD and documentation processes.
