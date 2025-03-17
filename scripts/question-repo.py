@@ -1,4 +1,4 @@
-import openai
+import openai 
 import os
 import time
 import glob
@@ -26,9 +26,9 @@ Usage:
 
 # List of API keys for potential rotation
 api_keys = [
-    "YOUR-FIRST-API-KEY",
-    # "YOUR-SECOND-API-KEY",
-    # "YOUR-THIRD-API-KEY",
+    "API_KEY_1_HERE",
+    #"",
+    #"",
 ]
 current_key_index = 0
 
